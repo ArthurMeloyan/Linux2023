@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 int main(int argc, char* argv[]){
-    if (argc == 1){
+    if (argc == 1 || argc > 3){
         printf("Invalid count of arguments is provided\n");
         return 1;
     }
