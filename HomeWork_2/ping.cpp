@@ -4,9 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <locale.h>
 #define MAX 1024
-#include <signal.h>
+
 
 
 
@@ -46,7 +45,7 @@ int main()
 
 	if (ping_id == -1 || pong_id == -1)
 	{
-		perror("Error occurred while trying to creat/get message queue");
+		perror("Error occurred while trying to create/get message queue");
 		return 1;
 	}
 	char ping_[] = "PING";
@@ -56,11 +55,13 @@ int main()
 	printf("The game has started!\n");
 	printf("If you want to stop it, please press ^C\n");
 	printf("Enjoy (:\n\n");
+	sleep(2);
 	if (msgsnd(ping_id, &ping, MAX, 0) == -1)
 	{
 		perror("Unable to send a message");
 		return 1;
 	}
+	printf("PING\n");
 	
 	int working = 1;
 	while(working)
