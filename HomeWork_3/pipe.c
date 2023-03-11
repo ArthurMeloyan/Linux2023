@@ -21,17 +21,31 @@ int main(int argc, char* argv[])
     }
 
     pid[0] = fork();
+    if (pid[0] < 0)
+    {
+    	perror("Unable to create a child process");
+    	return 1;
+    }
     if (pid[0] == 0)
     {
         close(fd[0][0]);
         dup2(fd[0][1], 1);
         close(fd[0][1]);
-        execlp(argv[1], argv[1], NULL);
+        if(execlp(argv[1], argv[1], NULL) < 0)
+        {
+        	perror("Execution failed");
+        	return 1;
+        }
     }
 
     for (int i = 1; i < count; ++i)
     {
         pid[i] = fork();
+        if (pid[i] < 0)
+        {
+        	perror("Forking failed");
+        	return 1;
+        }
         if (pid[i] == 0)
         {
             close(fd[i-1][1]);
@@ -41,7 +55,11 @@ int main(int argc, char* argv[])
             close(fd[i][0]);
             dup2(fd[i][1], 1);
             close(fd[i][1]);
-            execlp(argv[i+1], argv[i+1], NULL);
+            if (execlp(argv[i+1], argv[i+1], NULL) < 0)
+            {
+            	perror("Execution failed");
+            	return 1;
+            }
         }
     }
     for (int i = 0; i < count - 1; ++i)
