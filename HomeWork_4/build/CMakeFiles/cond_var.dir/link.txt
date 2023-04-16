@@ -1,0 +1,1 @@
+/usr/bin/cc CMakeFiles/cond_var.dir/main.c.o -o cond_var  -lpthread libqueue.a 
